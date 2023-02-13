@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mycontainer">
+  <div class="row">
+    <div class="col-md-6" style="justify-content: center; display: flex;">
+      <img src="{{ phone.image.url }}" class="img-fluid" id="phone">
+    </div>
+    <div class="col-md-5 phone-info-wrapper" id="bg">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="mb-0">{{ phone.brand }} {{ phone.model }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="mt-4">{{ phone.price }} руб.</h2>
+        </div>
+      </div>
+      <div class="btns">
+        <p>
+        <button type="button" class="btn btn-primary" id="mbtn">В корзину</button>
+        <button type="button" class="btn btn-primary" id="mbtn">Купить в 1 клик</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Характеристики:</h3>
+      <hr>
+      {{ phone.specifications|safe }}
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

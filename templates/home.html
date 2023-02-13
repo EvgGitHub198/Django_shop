@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mx-auto" style="max-width: 1100px;">
+  <div class="container">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        {% for image in images %}
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></button>
+        {% endfor %}
+      </div>
+      <div class="carousel-inner">
+        {% for image in images %}
+        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+          <img src="{{ image.image.url }}" class="img-fluid d-block w-100" alt="{{ image.caption }}">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ image.caption }}</h5>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</div>
+<h2 align="center">Здесь будет большще контента!!</h2>
+
+
+
+  {% if form.errors %}
+    <div class="alert alert-danger" style="margin-top: 50px;">
+      {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          <p>{{ field.label }}- {{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
+{% if messages %}
+    <div class="alert alert-success" role="alert">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}
