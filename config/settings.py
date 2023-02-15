@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'gallery',
+    'cartt',
 
     'django.contrib.admin',
     'django.contrib.auth',

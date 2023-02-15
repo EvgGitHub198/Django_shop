@@ -44,7 +44,6 @@
           <li><a class="dropdown-item" href="{% url 'phone_list' %}">Смартфоны</a></li>
         </ul>
       </li>
-
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
@@ -52,7 +51,9 @@
       </form>
     </div>
   </div>
+  <a href="{% url 'cart_detail' %}">cart</a>
 </nav>
+
 <div class="mwrapper">
 <div class="content">
   {% block content %}
@@ -83,4 +84,5 @@
 <script>
 
 </script>
+
 </html>

@@ -13,7 +13,10 @@
         <p class="card-text" id="price">Цена: {{ phone.price }} руб.</p>
       </div>
       <div class="card-footer">
-        <a href="#" class="btn btn-primary">В корзину</a>
+        {% csrf_token %}
+        <button type="button" class="btn btn-primary add-to-cart" data-phone-id="{{ phone.id }}">В корзину</button>
+        {% csrf_token %}
+<!--         <a href="{% url 'cart_add' phone_id=phone.id %}" class="btn btn-primary add-to-cart" data-phone-id="{{ phone.id }}">В корзину</a>-->
         <a href="{% url 'phone_detail' pk=phone.pk %}" class="btn btn-primary">Подробнее</a>
       </div>
     </div>
@@ -21,25 +24,42 @@
   {% endfor %}
 </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+  if (addToCartButtons.length) {
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        const phoneId = button.dataset.phoneId;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `/cart/add/${phoneId}/`);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRFToken', csrfToken);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            alert('Товар добавлен в корзину');
+          } else {
+            console.error(xhr.statusText);
+          }
+        };
+        xhr.onerror = function() {
+          console.error(xhr.statusText);
+        };
+        xhr.send(`phone_id=${phoneId}&csrfmiddlewaretoken=${csrfToken}`);
+      });
+    });
+  } else {
+    console.error('Button not found');
+  }
+</script>
+
 {% endblock %}
 
 
 
-
-
-
-
-
-<!--<div class="row">&ndash;&gt;-->
-<!--  {% for phone in phones %}-->
-<!--  <div class="col-md-4 mb-4">-->
-<!--    <div class="card h-100">-->
-<!--    <img src="{{ phone.image.url }}" class="card-img-top" alt="{{ phone.name }}">-->
-<!--    <div class="card-body">-->
-<!--      <h5 class="card-title">{{ phone.brand }} {{ phone.model }}</h5>-->
-<!--      <p class="card-text">{{ phone.description|slice:60 }}...</p>-->
-<!--      <p class="card-text">{{ phone.price }} руб.</p>-->
-<!--      <a href="#" class="btn btn-primary">Добавить в корзину</a>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--{% endfor %}
