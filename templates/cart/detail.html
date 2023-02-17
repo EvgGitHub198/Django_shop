@@ -1,37 +1,64 @@
 {% extends 'base.html' %}
 {% load my_tags %}
+
 {% block content %}
+<div class="mycont">
   <h1>Корзина</h1>
 
   {% if cart_items %}
     <table class="table">
       <thead>
-        <tr>
-          <th>Товар</th>
+        <tr class="tbcart">
+          <th class="tbcart2 mytd2">Товар</th>
           <th>Цена</th>
-          <th>Количество</th>
-          <th>Итого</th>
+          <th class="mytd3">Количество</th>
+          <th class="mytd">Итого</th>
         </tr>
       </thead>
-      <tbody>
-        {% for item in cart_items %}
-          <tr>
-            <td>{{ item.item }}</td>
-            <td>{{ item.item.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.item.price|multiply:item.quantity }}</td>
-          </tr>
-        {% endfor %}
+      <tbody class="tbcart">
+{% for item in cart_items %}
+  <tr>
+
+    <td class="tbcart2"><img src="{{ item.item.image.url }}" class="img-in-cart">{{ item.item }}, {{ item.item.description }} </td>
+    <td>{{ item.item.price }}</td>
+    <td>
+      <form method="POST" action="{% url 'cart_update' item.id %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <button type="submit" name="action" value="delete" class="btn btn-outline-secondary">
+          &#x1F5D1;
+        </button>
+        <button type="submit" name="action" value="decrement" class="btn btn-outline-secondary">
+          -
+        </button>
+      </div>
+      <input type="number" name="quantity" value="{{ item.quantity }}" class="form-control" min="1" max="99" style="width: 30px">
+      <div class="input-group-append">
+        <button type="submit" name="action" value="increment" class="btn btn-outline-secondary">
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+    </td>
+    <td>{{ item.item.price|multiply:item.quantity }}</td>
+  </tr>
+{% endfor %}
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3">Итого:</td>
-          <td>{{ total_price }}</td>
+          <td colspan="3" class="tbcart2">Итоговая стоимость</td>
+          <td class="tbcart"><strong>{{ total_price }}</strong></td>
         </tr>
       </tfoot>
     </table>
     <a href="#" class="btn btn-primary">Оформить заказ</a>
   {% else %}
-    <p>В корзине нет товаров</p>
+    <h3>В корзине нет товаров</h3>
   {% endif %}
+  </div>
 {% endblock %}
