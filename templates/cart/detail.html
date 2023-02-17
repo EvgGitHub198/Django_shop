@@ -1,27 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
+
+
 {% load my_tags %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <div class="mycont">
-  <h1>Корзина</h1>
-
+  <h1>Моя корзина</h1>
   {% if cart_items %}
     <table class="table">
       <thead>
         <tr class="tbcart">
-          <th class="tbcart2 mytd2">Товар</th>
+          <th></th>
+          <th class="mytd2">Товар</th>
           <th>Цена</th>
           <th class="mytd3">Количество</th>
           <th class="mytd">Итого</th>
         </tr>
       </thead>
       <tbody class="tbcart">
-{% for item in cart_items %}
+  {% for item in cart_items %}
   <tr>
-
-    <td class="tbcart2"><img src="{{ item.item.image.url }}" class="img-in-cart">{{ item.item }}, {{ item.item.description }} </td>
-    <td>{{ item.item.price }}</td>
-    <td>
+    <td class="tbcart2"><img src="{{ item.item.image.url }}" class="img-in-cart"></td>
+    <td class="item-in-cart" id="itm-capt">{{ item.item }},<br>{{ item.item.description }}</td>
+    <td class="item-in-cart">{{ item.item.price }} ₽</td>
+    <td class="item-in-cart">
       <form method="POST" action="{% url 'cart_update' item.id %}">
   {% csrf_token %}
   <div class="form-group">
@@ -45,18 +49,19 @@
 </form>
 
     </td>
-    <td>{{ item.item.price|multiply:item.quantity }}</td>
+    <td class="item-in-cart">{{ item.item.price|multiply:item.quantity }} ₽</td>
   </tr>
 {% endfor %}
       </tbody>
       <tfoot>
         <tr>
           <td colspan="3" class="tbcart2">Итоговая стоимость</td>
-          <td class="tbcart"><strong>{{ total_price }}</strong></td>
+          <td></td>
+          <td class="tbcart"><strong>{{ total_price }} ₽</strong></td>
         </tr>
       </tfoot>
     </table>
-    <a href="#" class="btn btn-primary">Оформить заказ</a>
+    <a href="#" class="btn btn-success">Оформить заказ</a>
   {% else %}
     <h3>В корзине нет товаров</h3>
   {% endif %}

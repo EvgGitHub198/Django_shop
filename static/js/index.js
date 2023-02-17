@@ -6,3 +6,4 @@
       $(this).find('.dropdown-menu').removeClass('show');
     });
   });
+

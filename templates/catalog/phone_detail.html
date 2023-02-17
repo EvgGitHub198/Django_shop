@@ -14,13 +14,27 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h2 class="mt-4">{{ phone.price }} руб.</h2>
+          <h2 class="mt-4">{{ phone.price }} ₽</h2>
         </div>
       </div>
       <div class="btns">
         <p>
-        <button type="button" class="btn btn-primary" id="mbtn">В корзину</button>
-        <button type="button" class="btn btn-primary" id="mbtn">Купить в 1 клик</button>
+          {% if phone.count > 0 %}
+        {% csrf_token %}
+          <button type="button" class="btn btn-primary add-to-cart"  data-phone-id="{{ phone.id }}">В корзину</button>
+        {% csrf_token %}
+          <button type="button" class="btn btn-primary">Купить в 1 клик</button>
+          {% else %}
+          <div class="btn-ntexstin">
+           <button class="btn btn-primary" disabled>Нет в наличии</button>
+        </div>
+          {% endif %}
+            <div class="cppinfo">
+              <p>Доставка: 290 руб. | 1-2 дня</p>
+              <p>Срочная доставка: 490 руб.</p>
+              <p>Самовывоз: 1-2 дня</p>
+              <p>Срок службы: 3 года</p>
+          </div>
         </p>
       </div>
     </div>
@@ -38,4 +52,36 @@
 
 
 
+<script>
+  const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+  if (addToCartButtons.length) {
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        const phoneId = button.dataset.phoneId;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `/cart/add/${phoneId}/`);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRFToken', csrfToken);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            alert('Товар добавлен в корзину');
+          } else {
+            console.error(xhr.statusText);
+          }
+        };
+        xhr.onerror = function() {
+          console.error(xhr.statusText);
+        };
+        xhr.send(`phone_id=${phoneId}&csrfmiddlewaretoken=${csrfToken}`);
+      });
+    });
+  } else {
+    console.error('Button not found');
+  }
+</script>
 {% endblock %}

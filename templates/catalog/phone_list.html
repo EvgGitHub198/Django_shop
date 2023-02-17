@@ -2,30 +2,34 @@
 
 {% block content %}
 <div class="container">
-<div class="row" id="bot">
+<div class="row" >
   {% for phone in phones %}
-  <div class="col-md-3 mb-3">
-    <div class="card h-120">
+  <div class="col">
+    <div class="card">
       <img src="{{ phone.image.url }}" class="card-img-top" alt="{{ phone.name }}">
       <div class="card-body">
-        <h5 class="card-title">{{ phone.brand }} {{ phone.model }}</h5>
+        <a class="phone-title" href="{% url 'phone_detail' pk=phone.pk %}">{{ phone.brand }} {{ phone.model }}</a>
         <p class="card-text">{{ phone.description }}</p>
-        <p class="card-text" id="price">Цена: {{ phone.price }} руб.</p>
+        <p class="card-text" id="price">Цена: {{ phone.price }} ₽</p>
       </div>
       <div class="card-footer">
-        {% csrf_token %}
-        <button type="button" class="btn btn-primary add-to-cart" data-phone-id="{{ phone.id }}">В корзину</button>
-        {% csrf_token %}
+        {% if phone.count > 0 %}
+          {% csrf_token %}
+          <button type="button" class="btn btn-primary add-to-cart btn-pl" data-phone-id="{{ phone.id }}">В корзину</button>
+          {% csrf_token %}
 <!--         <a href="{% url 'cart_add' phone_id=phone.id %}" class="btn btn-primary add-to-cart" data-phone-id="{{ phone.id }}">В корзину</a>-->
-        <a href="{% url 'phone_detail' pk=phone.pk %}" class="btn btn-primary">Подробнее</a>
+        {% else %}
+           <button class="btn btn-primary btn-ntexst" disabled>Нет в наличии</button>
+        {% endif %}
+          <a href="{% url 'phone_detail' pk=phone.pk %}" class="btn btn-primary btn-pl">Подробнее</a>
+        </div>
       </div>
     </div>
-  </div>
   {% endfor %}
 </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <script>
   const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
