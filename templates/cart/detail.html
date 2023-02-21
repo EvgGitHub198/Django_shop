@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
-
 {% load my_tags %}
 
 {% block content %}
@@ -22,7 +20,7 @@
       <tbody class="tbcart">
   {% for item in cart_items %}
   <tr>
-    <td class="tbcart2"><img src="{{ item.item.image.url }}" class="img-in-cart"></td>
+    <td class="tbcart2 item-in-cart"><img src="{{ item.item.image.url }}" class="img-in-cart"></td>
     <td class="item-in-cart" id="itm-capt">{{ item.item }},<br>{{ item.item.description }}</td>
     <td class="item-in-cart">{{ item.item.price }} ₽</td>
     <td class="item-in-cart">
@@ -30,7 +28,7 @@
   {% csrf_token %}
   <div class="form-group">
     <div class="input-group">
-      <div class="input-group-prepend">
+      <div class="input-group-prepend" style="margin: 0 auto;">
         <button type="submit" name="action" value="delete" class="btn btn-outline-secondary">
           &#x1F5D1;
         </button>
@@ -38,8 +36,11 @@
           -
         </button>
       </div>
-      <input type="number" name="quantity" value="{{ item.quantity }}" class="form-control" min="1" max="99" style="width: 30px">
-      <div class="input-group-append">
+      <div style="margin: 0 auto;">
+      {{ item.quantity }}
+        </div>
+<!--      <input type="number" name="quantity" value="{{ item.quantity }}" class="form-control" min="1" max="99" id="inpt-cart">-->
+      <div class="input-group-append" style="margin: 0 auto;">
         <button type="submit" name="action" value="increment" class="btn btn-outline-secondary">
           +
         </button>
@@ -61,9 +62,13 @@
         </tr>
       </tfoot>
     </table>
-    <a href="#" class="btn btn-success">Оформить заказ</a>
+    <a href="{% url 'order' %}" class="btn btn-success">Оформить заказ</a>
   {% else %}
-    <h3>В корзине нет товаров</h3>
+    <h3 align="center">В вашей корзине еще нет товаров</h3>
+      <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-basket3" viewBox="0 0 16 16" style="display: block; margin:auto; justify-content: center; text-align: center; max-width: 35%">
+  <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
+</svg>
+   <a href="{% url 'phone_list' %}" class="btn btn-primary" style="position: relative; left: 50%; transform: translate(-50%, 0); margin-top: 30px;">Перейти в каталог</a>
   {% endif %}
   </div>
 {% endblock %}

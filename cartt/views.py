@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from catalog.models import CartItems, Basket
+from catalog.models import CartItems, Basket, Orders
 from catalog.models import Phone
-from django.http import JsonResponse
+
 
 
 
@@ -52,9 +53,21 @@ def cart_update(request, item_id):
 
 
 
+def create_order(request):
+    if request.method == 'POST':
+        basket = Basket.objects.get(user=request.user)
+        cart_items = CartItems.objects.filter(cart=basket)
+        email = request.POST.get('email')
+        items = ' | '.join([str(item.item)+' '+str(item.item.description) for item in cart_items])
+        total_price = sum(item.item.price * item.quantity for item in cart_items)
+        address = request.POST.get('address')
+        is_deliver = True if address else False
+        order = Orders.objects.create(user_id=request.user.id, email=email, items=items, address=address, total_price=total_price, is_deliver=is_deliver)
+        order.save()
+        cart_items.delete()
+        return render(request, 'cart/order_success.html', {'order_id': order.id})
 
-# def cart_detail(request):
-#     cart_items = CartItems.objects.all()
-#     total_price = sum(item.item.price * item.quantity for item in cart_items)
-#     return render(request, 'cart/detail.html', {'cart_items': cart_items, 'total_price': total_price})
+    else:
+        return render(request, 'cart/order.html')
+
 

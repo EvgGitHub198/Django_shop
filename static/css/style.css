@@ -2,16 +2,27 @@
 @media (max-width: 576px) {
   /* Уменьшаем размер шрифта в заголовке */
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   /* Уменьшаем размер изображений внутри таблицы */
   .img-in-cart {
-    max-width: 50px;
+    max-width: 45px;
   }
   /* Скрываем некоторые элементы таблицы */
   .mytd3, .mytd {
     display: none;
   }
+  #itm-capt{
+  font-size:13px;
+}
+  .mycont{
+  margin: 7px;
+}
+  .inpt-cart{
+  width: 10px;
+    margin: 0;
+
+}
 }
 
 /* При ширине экрана от 577 до 768 пикселей */
@@ -27,6 +38,9 @@
   /* Скрываем некоторые элементы таблицы */
   .mytd3, .mytd {
     display: none;
+  }
+  #itm-capt{
+    font-size:17px;
   }
 }
 

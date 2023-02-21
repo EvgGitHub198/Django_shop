@@ -4,13 +4,15 @@
 <div class="container">
 <div class="row" >
   {% for phone in phones %}
-  <div class="col">
+  <div class="col-3">
     <div class="card">
       <img src="{{ phone.image.url }}" class="card-img-top" alt="{{ phone.name }}">
       <div class="card-body">
-        <a class="phone-title" href="{% url 'phone_detail' pk=phone.pk %}">{{ phone.brand }} {{ phone.model }}</a>
+          <a href="{% url 'phone_detail' pk=phone.pk %}" style="text-decoration: none; color: black">
+        <p class="phone-title">{{ phone.brand }} {{ phone.model }}</p>
         <p class="card-text">{{ phone.description }}</p>
         <p class="card-text" id="price">Цена: {{ phone.price }} ₽</p>
+          </a>
       </div>
       <div class="card-footer">
         {% if phone.count > 0 %}
@@ -27,8 +29,35 @@
     </div>
   {% endfor %}
 </div>
-</div>
 
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {% if phones.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ phones.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% endif %}
+    {% for i in phones.paginator.page_range %}
+      {% if phones.number == i %}
+        <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only"></span></a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if phones.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ phones.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+
+</div>
 
 <script>
   const addToCartButtons = document.querySelectorAll('.add-to-cart');
@@ -64,6 +93,3 @@
 </script>
 
 {% endblock %}
-
-
-

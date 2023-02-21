@@ -3,15 +3,11 @@
 {% block content %}
 <div class="reg-form">
   <h2 align="center">Регистрация</h2>
-  <form method="post">
+  <form method="POST">
     {% csrf_token %}
     <div class="form-group">
       <label for="username">Username:</label>
       <input type="text" name="username" required class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" name="email" required class="form-control">
     </div>
     <div class="form-group">
       <label for="password1">Password:</label>

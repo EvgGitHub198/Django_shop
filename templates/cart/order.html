@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST">
+      {% csrf_token %}
+  <fieldset>
+    <legend>Подтвердите ваш заказ</legend>
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input type="email" id="email" name="email" required class="form-control" placeholder="Введите ваш E-mail">
+    </div>
+    <div class="mb-3">
+      <label for="delivery" class="form-label">Выберите тип получения</label>
+      <select id="delivery" name="delivery" class="form-select">
+        <option value="pickup">Самовывоз</option>
+        <option value="delivery">Доставка</option>
+      </select>
+    </div>
+
+        <div class="mb-3">
+      <input type="text" id="address-section" style="display:none;" name="address"  class="form-control" placeholder="Введите ваш адрес доставки">
+    </div>
+
+    <div class="mb-3">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" required>
+        <label class="form-check-label" for="disabledFieldsetCheck">
+          Нажимая на кнопку «Подтвердить заказ» вы соглашаетесь с условиями оферты и политикой конфиденциальности
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Подтвердить заказ</button>
+  </fieldset>
+</form>
+    <script>
+        var delivery = document.getElementById('delivery');
+        var addressSection = document.getElementById('address-section');
+        delivery.addEventListener('change', function() {
+          if (delivery.value === 'delivery') {
+            addressSection.style.display = 'block';
+            addressSection.setAttribute("required", "true");
+          } else {
+            addressSection.style.display = 'none';
+            addressSection.removeAttribute("required");
+          }
+        });
+
+    </script>
+{% endblock %}

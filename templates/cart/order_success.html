@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container" style="justify-content: center">
+    <div class="row justify-content-center">
+      <div class="col-md-4 mt-6">
+        <div class="card">
+          <div class="card-header"></div>
+          <div class="card-body" style="justify-content: center; text-align: center; font-size: 24px">
+            <p>Ваш заказ был успешно оформлен</p>
+            <p>Номер вашего заказа: <strong>{{ order_id }}</strong></p>
+            <p>Спасибо за покупку!</p
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<img src="{% static 'img/spsb-37.gif' %}" alt="" style="justify-content: center; text-align: center; margin: 10px auto 20px; display: block;">
+{% endblock %}
