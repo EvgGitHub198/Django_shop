@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from catalog.models import CartItems, Basket, Orders
 from catalog.models import Phone
-
-
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 
@@ -52,19 +52,54 @@ def cart_update(request, item_id):
     return redirect('cart_detail')
 
 
+def send_order_email(email, order_id, items, total_price):
+    # Конфигурация SMTP сервера
+    smtp_host = 'smtp.gmail.com'
+    smtp_port = 587
+    smtp_username = 'mishagon02@gmail.com'
+    smtp_password = 'nchhfimsvyarssib'
+    smtp_sender = 'mishagon02@gmail.com'
+
+    # Создание сообщения
+    message = MIMEMultipart()
+    message['From'] = smtp_sender
+    message['To'] = email
+    message['Subject'] = f'Заказ №{order_id}'
+
+    # Создание текстового сообщения
+    text = f'Ваш заказ №{order_id} подтвержден!\n\n Заказанные товары:\n\n'
+    for item in items:
+        text += f'{item["name"]} ({item["description"]}) - {item["price"]} руб. x {item["quantity"]}\n'
+    text += f'\nИтоговая сумма: {total_price} руб.\n\nСпасибо, что выбрали наш магазин!\n\n'
+    message.attach(MIMEText(text))
+
+    # Отправка сообщения
+    try:
+        with smtplib.SMTP(smtp_host, smtp_port) as smtp:
+            smtp.starttls()
+            smtp.login(smtp_username, smtp_password)
+            smtp.sendmail(smtp_sender, email, message.as_string())
+        print(f'Message has been sent to {email}')
+    except Exception as e:
+        print(f'Error sending message to {email}: {e}')
+
+
+
+
 
 def create_order(request):
     if request.method == 'POST':
         basket = Basket.objects.get(user=request.user)
         cart_items = CartItems.objects.filter(cart=basket)
         email = request.POST.get('email')
-        items = ' | '.join([str(item.item)+' '+str(item.item.description) for item in cart_items])
+        items = [{'name': str(item.item), 'description': str(item.item.description), 'price': item.item.price, 'quantity': item.quantity} for item in cart_items]
         total_price = sum(item.item.price * item.quantity for item in cart_items)
         address = request.POST.get('address')
         is_deliver = True if address else False
         order = Orders.objects.create(user_id=request.user.id, email=email, items=items, address=address, total_price=total_price, is_deliver=is_deliver)
         order.save()
         cart_items.delete()
+        send_order_email(email, order.id, items, total_price)
         return render(request, 'cart/order_success.html', {'order_id': order.id})
 
     else:

@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
+  <head>
+    <meta charset="UTF-8">
+    <title>Подтверждение заказа</title>
+    <meta http-equiv="refresh" content="5; url=/">
+  </head>
 {% block content %}
   <div class="container" style="justify-content: center">
     <div class="row justify-content-center">
       <div class="col-md-4 mt-6">
-        <div class="card">
+        <div class="card" style="height: 250px">
           <div class="card-header"></div>
           <div class="card-body" style="justify-content: center; text-align: center; font-size: 24px">
             <p>Ваш заказ был успешно оформлен</p>
             <p>Номер вашего заказа: <strong>{{ order_id }}</strong></p>
-            <p>Спасибо за покупку!</p
+            <p>Спасибо за покупку!</p>
           </div>
         </div>
       </div>
@@ -17,4 +22,9 @@
   </div>
 
 <img src="{% static 'img/spsb-37.gif' %}" alt="" style="justify-content: center; text-align: center; margin: 10px auto 20px; display: block;">
+<script>
+      setTimeout(function() {
+        window.location.replace("/");
+      }, 5000);
+    </script>
 {% endblock %}
