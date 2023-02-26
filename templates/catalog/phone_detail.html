@@ -40,18 +40,100 @@
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="col-md-12">
+  <div class="row mt-4" style="margin-left: 25px; margin-right: 25px;">
+    <div class="col-md-6">
       <h3>Характеристики:</h3>
       <hr>
       {{ phone.specifications|safe }}
     </div>
+     <div class="col-md-6" id="reviewsList">
+  <h3>Отзывы:</h3>
+  <hr>
+{% if reviews %}
+       <p><strong>Средняя оценка товара: {{ average_rating|floatformat:1}}</strong></p>
+{% endif %}
+  {% for review in reviews %}
+    <div class="card" style="height: auto; max-width: 600px; background: aliceblue">
+
+      <div class="card-body">
+        <h5 class="card-title">{{ review.name }}
+          {% if review.rating >= 4 %}
+          <div class="rating-circle green">{{ review.rating }}</div>
+            {% elif review.rating >= 2 %}
+              <div class="rating-circle yellow">{{ review.rating }}</div>
+                {% else %}
+                  <div class="rating-circle red">{{ review.rating }}</div>
+                    {% endif %}
+        </h5>
+
+        <p class="card-text"><strong>Преимущества:</strong> <p>{{ review.advantages }}</p></p>
+        <p class="card-text"><strong>Недостатки:</strong> <p>{{ review.disadvantages }}</p></p>
+        <p class="card-text"><strong>Комментарий:</strong> <p>{{ review.comment }}</p></p>
+
+      </div>
+    </div>
+  {% empty %}
+    <h5>Нет отзывов</h5>
+  {% endfor %}
+<button id="toggleForm" class="btn btn-primary" style="margin-left: 15px; margin-top: 15px">Оставить отзыв</button>
+
+<form id="reviewForm" method="post" action="{% url 'phone_detail' phone.id %}" style="margin-left: 20px; margin-top: 20px; display: none;">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="{{ form.name.id_for_label }}">Ваше имя:</label>
+    {{ form.name }}
   </div>
+  <div class="form-group">
+    <label for="{{ form.advantages.id_for_label }}">Преимущества:</label>
+    {{ form.advantages }}
+  </div>
+  <div class="form-group">
+    <label for="{{ form.disadvantages.id_for_label }}">Недостатки:</label>
+    {{ form.disadvantages }}
+  </div>
+  <div class="form-group">
+    <label for="{{ form.comment.id_for_label }}">Комментарии:</label>
+    {{ form.comment }}
+  </div>
+  <div class="form-group">
+    <label for="{{ form.rating.id_for_label }}">Оценка:</label>
+    <input id="id_rating" type="range" min="0" max="5" name="rating" required value="{{ form.rating.value }}">
+    <span id="ratingOutput">3</span>
+  </div>
+  <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+
+
+</div>
+
+
 </div>
 
 
 
+  </div>
 
+</div>
+
+</div>
+
+
+
+<script>
+const toggleFormBtn = document.getElementById('toggleForm');
+const reviewForm = document.getElementById('reviewForm');
+
+toggleFormBtn.addEventListener('click', function() {
+  if (reviewForm.style.display === 'none') {
+    reviewForm.style.display = 'block';
+    toggleFormBtn.textContent = 'Свернуть форму';
+  } else {
+    reviewForm.style.display = 'none';
+    toggleFormBtn.textContent = 'Оставить отзыв';
+  }
+});
+
+</script>
 <script>
   const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
@@ -83,5 +165,13 @@
   } else {
     console.error('Button not found');
   }
+</script>
+<script>
+  const ratingInput = document.querySelector('#id_rating');
+const ratingOutput = document.querySelector('#ratingOutput');
+
+ratingInput.addEventListener('input', () => {
+  ratingOutput.textContent = ratingInput.value;
+});
 </script>
 {% endblock %}

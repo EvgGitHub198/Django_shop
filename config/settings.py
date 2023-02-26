@@ -124,6 +124,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+RECAPTCHA_SITE_KEY = '6LfhK7AkAAAAAPsonOJ2B72fAGiPgpPC-7I0aBqb'
+RECAPTCHA_SECRET_KEY = '6LfhK7AkAAAAAMoCT8yBNtfPGPuoKLhMO2mDTU04'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

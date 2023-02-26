@@ -6,18 +6,21 @@
   <form method="POST">
     {% csrf_token %}
     <div class="form-group">
-      <label for="username">Username:</label>
+      <label for="username">Имя пользователя:</label>
       <input type="text" name="username" required class="form-control">
     </div>
     <div class="form-group">
-      <label for="password1">Password:</label>
+      <label for="password1">Пароль:</label>
       <input type="password" name="password1" required class="form-control">
     </div>
     <div class="form-group">
-      <label for="password2">Confirm password:</label>
+      <label for="password2">Подтвердите пароль:</label>
       <input type="password" name="password2" required class="form-control">
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <div class="form-group">
+      <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
   </form>
   {% if form.errors %}
     <div class="alert alert-danger" style="margin-top: 50px;">
@@ -36,6 +39,8 @@
         {% endfor %}
     </div>
 {% endif %}
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
 </div>
 
 {% endblock %}

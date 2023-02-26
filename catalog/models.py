@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+from django.utils import timezone
 
 
 class Phone(models.Model):
@@ -13,6 +15,8 @@ class Phone(models.Model):
 
     def __str__(self):
         return f'{self.brand} {self.model}'
+    def get_absolute_url(self):
+        return reverse('phone_detail', args=[str(self.id)])
 
 
 
@@ -43,5 +47,15 @@ class Orders(models.Model):
         return f'{self.id} | {self.date_created}'
 
 
+class Review(models.Model):
+    phone = models.ForeignKey(Phone, on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=255)
+    advantages = models.TextField()
+    disadvantages = models.TextField()
+    comment = models.TextField()
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return f'Review by {self.name} for {self.phone}'
 

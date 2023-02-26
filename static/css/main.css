@@ -71,7 +71,7 @@
   margin-top: 10px;
 }
 #phone {
-  max-width: 50%;
+  max-width: 55%;
   height: auto;
 }
 .crsl{
@@ -216,8 +216,9 @@ form {
 }
 
 .btn-pl{
-  width: 108px;
+  width: 100px;
   margin: 5px;
+  margin-left: 7px;
 
 
 }
@@ -258,3 +259,76 @@ form {
 .card{
   height: 500px;
 }
+
+.rating-circle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.green {
+  background-color: green;
+  color: white;
+}
+
+.yellow {
+  background-color: orange;
+  color: black;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+input[type="text"],
+textarea {
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  width: 100%;
+}
+input[type=range] {
+  -webkit-appearance: none; /* убираем стандартный вид ползунка */
+  width: 100%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* убираем стандартный вид бегунка */
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+
+

@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="container">
-<div class="row" >
+<div class="row">
   {% for phone in phones %}
-  <div class="col-3">
+  <div class="col">
     <div class="card">
       <img src="{{ phone.image.url }}" class="card-img-top" alt="{{ phone.name }}">
       <div class="card-body">
@@ -58,7 +59,6 @@
 
 
 </div>
-
 <script>
   const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
