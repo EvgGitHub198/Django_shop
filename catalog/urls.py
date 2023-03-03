@@ -6,4 +6,6 @@ urlpatterns = [
     path('phone/<int:pk>/', phone_detail, name='phone_detail'),
     path('search/', search_view, name='search'),
 
+
+
 ]

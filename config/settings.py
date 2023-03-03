@@ -73,6 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'config.context_processors.year_processor',
+                'catalog.views.cart_count',
+
 
 
             ],

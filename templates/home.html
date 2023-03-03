@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="mx-auto">
   <div class="container">
@@ -12,7 +12,7 @@
       <div class="carousel-inner">
         {% for image in images %}
         <div class="carousel-item{% if forloop.first %} active{% endif %}">
-          <img src="{{ image.image.url }}" class="img-fluid d-block w-100" alt="{{ image.caption }}">
+          <a href="{% url 'phone_list' %}"><img src="{{ image.image.url }}" class="img-fluid d-block w-100" alt="{{ image.caption }}"></a>
           <div class="carousel-caption d-none d-md-block">
             <h5>{{ image.caption }}</h5>
           </div>
@@ -31,6 +31,69 @@
   </div>
 </div>
 
+<section class="excellences" style="margin-top: 40px">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3 text-center mb-5 mb-lg-0">
+					<div class="excellences-icon">
+						<div class="icon">
+                            <span class="bxhtmled-surrogate-inner">
+                                <span class="bxhtmled-right-side-item-icon"></span>
+                                <span class="bxhtmled-comp-lable" unselectable="on" spellcheck="false">
+                                <img height="80" width="80" src="{% static 'img/apple.svg' %}" alt="aaa">
+                                </span>
+                            </span>
+						</div>
+					</div>
+					<h3>Оригинальная продукция</h3>
+					<p>Никогда не продавали и не продаем восстановленную технику</p>
+				</div>
+				<div class="col-sm-6 col-lg-3 text-center mb-5 mb-lg-0">
+					<div class="excellences-icon">
+                    <div class="icon">
+                            <span class="bxhtmled-surrogate-inner">
+                                <span class="bxhtmled-right-side-item-icon"></span>
+                                <span class="bxhtmled-comp-lable" unselectable="on" spellcheck="false">
+                                <img height="80" width="80" src="{% static 'img/phone-fill.svg' %}" alt="aaa">
+                                </span>
+                            </span>
+						</div>
+					</div>
+					<h3>Магазин работает с 2017 года!</h3>
+					<p>
+                        Очень лояльны к клиентам, всегда идем на встречу.					</p>
+				</div>
+				<div class="col-sm-6 col-lg-3 text-center mb-5 mb-sm-0">
+					<div class="excellences-icon">
+                    <div class="icon">
+                            <span class="bxhtmled-surrogate-inner">
+                                <span class="bxhtmled-right-side-item-icon"></span>
+                                <span class="bxhtmled-comp-lable" unselectable="on" spellcheck="false">
+                                <img height="80" width="80" src="{% static 'img/tags-fill.svg' %}" alt="aaa">
+                                </span>
+                            </span>
+						</div>
+					</div>
+					<h3>Низкие цены</h3>
+					<p>Сделаем самую низкую цену на технику Apple!<br></p>
+				</div>
+				<div class="col-sm-6 col-lg-3 text-center">
+					<div class="excellences-icon">
+                    <div class="icon">
+                            <span class="bxhtmled-surrogate-inner">
+                                <span class="bxhtmled-right-side-item-icon"></span>
+                                <span class="bxhtmled-comp-lable" unselectable="on" spellcheck="false">
+                                <img height="80" width="80" src="{% static 'img/stopwatch-fill.svg' %}" alt="aaa">
+                                </span>
+                            </span>
+						</div>
+					</div>
+					<h3>Быстрая доставка</h3>
+					<p>Привозим в максимально короткие сроки и никогда не срываем оговариваемые сроки доставки</p>
+				</div>
+			</div>
+		</div>
+</section>
 
 
 

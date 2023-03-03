@@ -1,36 +1,46 @@
 {% extends 'base.html' %}
-
+{% load my_tags %}
 {% block content %}
 
 <div class="container">
 <div class="row">
   {% for phone in phones %}
   <div class="col">
+    <a href="{% url 'phone_detail' pk=phone.pk %}" style="text-align:center; text-decoration: none; color: black">
     <div class="card">
       <img src="{{ phone.image.url }}" class="card-img-top" alt="{{ phone.name }}">
       <div class="card-body">
-          <a href="{% url 'phone_detail' pk=phone.pk %}" style="text-decoration: none; color: black">
+
         <p class="phone-title">{{ phone.brand }} {{ phone.model }}</p>
         <p class="card-text">{{ phone.description }}</p>
-        <p class="card-text" id="price">Цена: {{ phone.price }} ₽</p>
-          </a>
+        <p style="font-size: 23px; color: #ca392b">{{ phone.price }} ₽</p>
+
       </div>
-      <div class="card-footer">
-        {% if phone.count > 0 %}
+
+      <div class="card-footer d-flex justify-content-between align-items-center">
+      {% if phone.count > 0 %}
           {% csrf_token %}
-          <button type="button" class="btn btn-primary add-to-cart btn-pl" data-phone-id="{{ phone.id }}">В корзину</button>
-          {% csrf_token %}
-<!--         <a href="{% url 'cart_add' phone_id=phone.id %}" class="btn btn-primary add-to-cart" data-phone-id="{{ phone.id }}">В корзину</a>-->
-        {% else %}
-           <button class="btn btn-primary btn-ntexst" disabled>Нет в наличии</button>
-        {% endif %}
-          <a href="{% url 'phone_detail' pk=phone.pk %}" class="btn btn-primary btn-pl">Подробнее</a>
+          {% if user.is_authenticated %}
+              <button type="button" class="btn-animate add-to-cart w-100" data-phone-id="{{ phone.id }}">
+                  <span class="mr-auto">В корзину</span>
+              </button>
+          {% else %}
+                    <form class="w-100" action="{% url 'login' %}">
+                    <button class="btn btn-primary ml-auto w-100">В корзину</button>
+                    </form>
+          {% endif %}
+      {% else %}
+          <button class="btn btn-primary ml-auto w-100" disabled>Нет в наличии</button>
+      {% endif %}
+
         </div>
       </div>
+       </a>
     </div>
   {% endfor %}
-</div>
 
+
+</div>
 <nav aria-label="Page navigation">
   <ul class="pagination">
     {% if phones.has_previous %}
@@ -56,9 +66,23 @@
     {% endif %}
   </ul>
 </nav>
-
-
 </div>
+
+
+
+<script>
+  const addBtns = document.querySelectorAll('.btn-animate.add-to-cart');
+  addBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.add('clicked');
+      setTimeout(() => {
+        btn.classList.remove('clicked');
+      }, 1000);
+    });
+  });
+</script>
+
+
 <script>
   const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
@@ -76,7 +100,11 @@
         xhr.setRequestHeader('X-CSRFToken', csrfToken);
         xhr.onload = function() {
           if (xhr.status === 200) {
-            alert('Товар добавлен в корзину');
+            const countEl = document.querySelector(`#cart-count`);
+            if (countEl) {
+              const count = parseInt(countEl.innerText);
+              countEl.innerText = count + 1;
+            }
           } else {
             console.error(xhr.statusText);
           }
@@ -91,5 +119,6 @@
     console.error('Button not found');
   }
 </script>
+
 
 {% endblock %}

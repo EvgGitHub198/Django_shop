@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div style="margin: 20px">
     <form method="POST">
       {% csrf_token %}
   <fieldset>
-    <legend>Подтвердите ваш заказ</legend>
+    <legend align="center">Подтвердите ваш заказ</legend>
     <div class="mb-3">
       <label for="email" class="form-label">E-mail</label>
       <input type="email" id="email" name="email" required class="form-control" placeholder="Введите ваш E-mail">
@@ -32,6 +33,7 @@
     <button type="submit" class="btn btn-primary">Подтвердить заказ</button>
   </fieldset>
 </form>
+  </div>
     <script>
         var delivery = document.getElementById('delivery');
         var addressSection = document.getElementById('address-section');

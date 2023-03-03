@@ -7,7 +7,7 @@ from django.utils import timezone
 class Phone(models.Model):
     brand = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=150)
     specifications = models.TextField()
     count = models.IntegerField()
@@ -39,7 +39,7 @@ class Orders(models.Model):
     items = models.TextField()
     address = models.CharField(max_length=400, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    total_price = models.DecimalField(max_digits=8, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
     is_deliver = models.BooleanField(default=False)
 
 

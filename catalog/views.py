@@ -1,16 +1,16 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import models
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-
-from catalog.forms import SearchForm, ReviewForm
-from catalog.models import Phone
-from django.db.models import Q
+from catalog.forms import ReviewForm
+from catalog.models import Phone, Basket, CartItems
+from django.db.models import Q, Sum
 
 
 def phone_list(request):
     phone_list = Phone.objects.all()
-    paginator = Paginator(phone_list, 8)  # количество объектов на странице
-
+    paginator = Paginator(phone_list, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -46,3 +46,15 @@ def search_view(request):
     else:
         products = Phone.objects.all()
     return render(request, 'catalog/search.html', {'products': products})
+
+
+
+def cart_count(request):
+    cart_count = 0
+    total_items = 0
+    if request.user.is_authenticated:
+        baskets = Basket.objects.filter(user=request.user)
+        if baskets.exists():
+            cart_count = baskets[0].items.count()
+            total_items = CartItems.objects.filter(cart__user=request.user).aggregate(total_items=Sum('quantity'))['total_items'] or 0
+    return {'cart_count': cart_count, 'total_items': total_items if total_items else 0}

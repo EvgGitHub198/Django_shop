@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/phone_detail.css' %}">
 <div class="mycontainer">
   <div class="row">
     <div class="col-md-6" style="justify-content: center; display: flex;">
@@ -9,21 +10,27 @@
     <div class="col-md-5 phone-info-wrapper" id="bg">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="mb-0">{{ phone.brand }} {{ phone.model }}</h1>
+          <h1 align="center" style="margin-top: 10px">{{ phone.brand }} {{ phone.model }}</h1>
+          <h5 align="center">{{ phone.description }}</h5>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h2 class="mt-4">{{ phone.price }} ₽</h2>
+          <h2 class="mt-2" style="color: #ca392b">{{ phone.price }} ₽</h2>
         </div>
       </div>
       <div class="btns">
         <p>
           {% if phone.count > 0 %}
         {% csrf_token %}
-          <button type="button" class="btn btn-primary add-to-cart"  data-phone-id="{{ phone.id }}">В корзину</button>
+          {% if user.is_authenticated %}
+          <button type="button" class="btn-animate-detail add-to-cart w-100"  data-phone-id="{{ phone.id }}">В корзину</button>
+              {% else %}
+              <form action="{% url 'login' %}">
+              <button class="btn btn-success ml-auto w-100">В корзину</button>
+              </form>
+        {% endif %}
         {% csrf_token %}
-          <button type="button" class="btn btn-primary">Купить в 1 клик</button>
           {% else %}
           <div class="btn-ntexstin">
            <button class="btn btn-primary" disabled>Нет в наличии</button>
@@ -40,7 +47,7 @@
     </div>
   </div>
 
-  <div class="row mt-4" style="margin-left: 25px; margin-right: 25px;">
+  <div class="row mt-3">
     <div class="col-md-6">
       <h3>Характеристики:</h3>
       <hr>
@@ -151,7 +158,11 @@ toggleFormBtn.addEventListener('click', function() {
         xhr.setRequestHeader('X-CSRFToken', csrfToken);
         xhr.onload = function() {
           if (xhr.status === 200) {
-            alert('Товар добавлен в корзину');
+            const countEl = document.querySelector(`#cart-count`);
+            if (countEl) {
+              const count = parseInt(countEl.innerText);
+              countEl.innerText = count + 1;
+            }
           } else {
             console.error(xhr.statusText);
           }
